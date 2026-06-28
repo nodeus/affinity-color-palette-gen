@@ -1,7 +1,7 @@
 /**
  * name: Color Palette Generator
  * description: Extracts all fill, stroke, and gradient colors from selected nodes or entire spread. Displays swatches with RGB, CMYK, HSL, and HEX values, plus gradient stops. Groups outputs by fills, strokes, and gradients.
- * version: 9.1.0
+ * version: 9.1.1
  * author: nodeus
  */
 
@@ -12,7 +12,7 @@ const { DocumentCommand, AddChildNodesCommandBuilder, NodeChildType, NodeMoveTyp
 const { ShapeNodeDefinition, FrameTextNodeDefinition, ContainerNodeDefinition } = require('/nodes');
 const { Shape, ShapeType } = require('/shapes');
 const { Rectangle, Transform } = require('/geometry');
-const { Colour } = require('/colours');
+const { Colour, ColourProfileSet } = require('/colours');
 const { FillDescriptor, SolidFill, FillType, GradientFill, GradientFillType } = require('/fills');
 const { StoryBuilder } = require('/storybuilder');
 const { GlyphAtts } = require('/glyphatts');
@@ -29,11 +29,11 @@ function toHex(r, g, b) { return "#" + hex2(r) + hex2(g) + hex2(b); }
 function rgbKey(r, g, b) { return r + "," + g + "," + b; }
 
 function toCMYKString(colour) {
-  try { const k = colour.cmyka8; return "C:" + k.c + " M:" + k.m + " Y:" + k.y + " K:" + k.k; }
+  try { const cps = ColourProfileSet.default; const k = colour.getCMYKA8(false, cps); return "C:" + Math.round(k.c * 100 / 255) + " M:" + Math.round(k.m * 100 / 255) + " Y:" + Math.round(k.y * 100 / 255) + " K:" + Math.round(k.k * 100 / 255); }
   catch (e) { return "C:? M:? Y:? K:?"; }
 }
 function toHSLString(colour) {
-  try { const h = colour.hslaf; return "H:" + Math.round(h.h) + "\u00B0 S:" + Math.round(h.s * 100) + "% L:" + Math.round(h.l * 100) + "%"; }
+  try { const h = colour.hslaf; return "H:" + Math.round(h.h * 360) + "\u00B0 S:" + Math.round(h.s * 100) + "% L:" + Math.round(h.l * 100) + "%"; }
   catch (e) { return "H:? S:? L:?"; }
 }
 function toRGBString(r, g, b) { return "R:" + r + " G:" + g + " B:" + b; }

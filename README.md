@@ -16,4 +16,4 @@ Run via MCP Affinity server: `affinity_execute_script` or paste into Script Mana
 
 ## Version
 
-9.1.0
+9.1.1

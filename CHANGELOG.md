@@ -1,5 +1,11 @@
 # Changelog
 
+## [9.1.1] - 2026-06-28
+
+### Fixed
+- HSL hue now correctly converts from [0,1] fraction to degrees (×360).
+- CMYK uses profile-aware conversion (`ColourProfileSet.default`) to match Affinity's color picker.
+
 ## [9.1.0] - 2026-06-28
 
 ### Fixed
